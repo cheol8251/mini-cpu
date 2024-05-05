@@ -1,0 +1,17 @@
+module MU0_Execute(
+    input wire [3:0] control_signals,
+    input wire [15:0] operand1,
+    input wire [15:0] operand2,
+    output reg [15:0] result
+);
+
+    // 연산 수행 및 결과 저장
+    always @* begin
+        case (control_signals)
+            4'b0100: result = operand1 + operand2;   // ADD 연산
+            4'b1000: result = operand1 - operand2;   // SUBTRACT 연산
+            default: result = 16'h0000;               // 기본 값 (NOP)
+        endcase
+    end
+
+endmodule

@@ -1,0 +1,46 @@
+module MU0_Execute_Testbench;
+
+    // 테스트 벤치마크 인스턴스 생성
+    MU0_Execute execute_unit (
+        .control_signals(control_signals),  // 제어 신호 입력
+        .operand1(operand1),                // 피연산자1 입력
+        .operand2(operand2),                // 피연산자2 입력
+        .result(result)                     // 연산 결과 출력
+    );
+
+    // 시뮬레이션용 신호 변수
+    reg [3:0] control_signals;
+    reg [15:0] operand1, operand2;
+    wire [15:0] result;  // 연산 결과는 wire로 선언
+
+    // 테스트 시작
+    initial begin
+        // ADD 연산 테스트
+        control_signals = 4'b0100;  // ADD 제어 신호 설정
+        operand1 = 16'h0005;        // 피연산자1 = 5
+        operand2 = 16'h0003;        // 피연산자2 = 3
+        #10; // 10ns 딜레이 추가
+        $display("Control Signals = %b, Operand1 = %h, Operand2 = %h, Result = %h", 
+                 control_signals, operand1, operand2, result);
+
+        // SUBTRACT 연산 테스트
+        control_signals = 4'b1000;  // SUBTRACT 제어 신호 설정
+        operand1 = 16'h000A;        // 피연산자1 = 10
+        operand2 = 16'h0002;        // 피연산자2 = 2
+        #10; // 10ns 딜레이 추가
+        $display("Control Signals = %b, Operand1 = %h, Operand2 = %h, Result = %h", 
+                 control_signals, operand1, operand2, result);
+
+        // NOP 테스트 (기본 값)
+        control_signals = 4'b0000;  // NOP 제어 신호 설정
+        operand1 = 16'h0000;
+        operand2 = 16'h0000;
+        #10; // 10ns 딜레이 추가
+        $display("Control Signals = %b, Operand1 = %h, Operand2 = %h, Result = %h", 
+                 control_signals, operand1, operand2, result);
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+endmodule

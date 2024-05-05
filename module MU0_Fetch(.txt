@@ -1,0 +1,39 @@
+module MU0_Fetch(
+    input wire [15:0] pc,
+    input wire clk,
+    input wire reset,
+    input wire mem_read,
+    input wire [15:0] mem_address,
+    output reg [15:0] instruction,
+    output reg [15:0] next_pc
+);
+
+    // 메모리 모듈
+    reg [15:0] memory [0:65535];  // 16-bit 메모리
+
+    // 초기 메모리 값 설정 (예시)
+    initial begin
+        // 메모리에 프로그램 로드
+        memory[0] <= 16'h1000;  // 예시: 0번지에 첫 번째 명령어 저장
+        memory[1] <= 16'h2001;  // 예시: 1번지에 두 번째 명령어 저장
+        // 필요에 따라 다른 명령어들을 메모리에 초기화
+    end
+
+    // 프로세서 동작
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            // 리셋 상태에서는 초기화
+            instruction <= 16'h0000;
+            next_pc <= 16'h0000;
+        end
+        else begin
+            if (mem_read) begin
+                // 현재 PC가 가리키는 주소에서 명령어 읽기
+                instruction <= memory[pc];
+                // 다음 PC 설정 (현재 PC + 1)
+                next_pc <= pc + 1;
+            end
+        end
+    end
+
+endmodule

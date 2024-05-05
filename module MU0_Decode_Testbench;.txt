@@ -1,0 +1,38 @@
+module MU0_Decode_Testbench;
+
+    // 테스트 벤치마크 인스턴스 생성
+    MU0_Decode decode_unit (
+        .instruction(instruction),          // 명령어 입력
+        .control_signals(control_signals)   // 제어 신호 출력
+    );
+
+    // 시뮬레이션용 명령어 변수
+    reg [15:0] instruction;
+
+    // 테스트 시작
+    initial begin
+        // 명령어 테스트: LOAD 명령어 (opcode = 0000)
+        instruction = 16'h1000;
+        #10 $display("Opcode = %b, Control Signals = %b", instruction[15:12], decode_unit.control_signals);
+
+        // 명령어 테스트: STORE 명령어 (opcode = 0001)
+        instruction = 16'h2001;
+        #10 $display("Opcode = %b, Control Signals = %b", instruction[15:12], decode_unit.control_signals);
+
+        // 명령어 테스트: ADD 명령어 (opcode = 0010)
+        instruction = 16'h3002;
+        #10 $display("Opcode = %b, Control Signals = %b", instruction[15:12], decode_unit.control_signals);
+
+        // 명령어 테스트: SUBTRACT 명령어 (opcode = 0011)
+        instruction = 16'h4003;
+        #10 $display("Opcode = %b, Control Signals = %b", instruction[15:12], decode_unit.control_signals);
+
+        // 명령어 테스트: 기본 값 (NOP, opcode = others)
+        instruction = 16'h5004;
+        #10 $display("Opcode = %b, Control Signals = %b", instruction[15:12], decode_unit.control_signals);
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+endmodule

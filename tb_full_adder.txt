@@ -1,0 +1,35 @@
+module tb_four_bit;
+
+    reg [3:0] x;
+    reg [3:0] y;
+    reg c_in;
+    
+    wire [3:0] sum;
+    wire c_out;
+    
+    four_bit DUT (
+        .x(x),
+        .y(y),
+        .c_in(c_in),
+        .sum(sum),
+        .c_out(c_out)
+    );
+
+    integer i;
+
+    initial begin
+        x = 4'b0101; // x = 5
+        c_in = 1'b0;
+        
+        // 시뮬레이션을 위해 y 값을 반복적으로 변경
+        for (i = 0; i < 16; i = i + 1) begin
+            #5 y = i;
+        end
+        
+        // 시뮬레이션 종료
+        #100 $finish;
+    end
+
+    always #5 c_in = ~c_in;
+
+endmodule

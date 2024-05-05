@@ -1,0 +1,28 @@
+module MU0_Decode(
+    input wire [15:0] instruction,
+    output reg [3:0] control_signals
+);
+
+    // 명령어 필드 정의
+    parameter OP_WIDTH = 4;  // 명령어 필드의 너비
+    parameter OP_MASK = 4'b1111;  // 명령어 필드 마스크
+
+    // 명령어 필드 추출
+    reg [3:0] opcode;  // 명령어 필드 (4비트)
+    always @* begin
+        opcode = instruction[15:12];  // 상위 4비트가 opcode
+    end
+
+    // 제어 신호 생성
+    always @* begin
+        case (opcode)
+            // 각 명령어에 대한 제어 신호 설정
+            4'b0000: control_signals = 4'b0001;  // LOAD 명령어
+            4'b0001: control_signals = 4'b0010;  // STORE 명령어
+            4'b0010: control_signals = 4'b0100;  // ADD 명령어
+            4'b0011: control_signals = 4'b1000;  // SUBTRACT 명령어
+            default: control_signals = 4'b0000;   // 기본 값 (NOP)
+        endcase
+    end
+
+endmodule

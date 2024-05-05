@@ -1,0 +1,46 @@
+module MU0_Fetch_Testbench;
+
+    // 테스트 벤치마크 인스턴스 생성
+    MU0_Fetch fetch_unit (
+        .pc(pc),            // 프로그램 카운터 입력
+        .clk(clk),          // 클럭 입력
+        .reset(reset),      // 리셋 입력
+        .mem_read(mem_read),// 메모리 읽기 신호 입력
+        .mem_address(mem_address),  // 메모리 주소 입력
+        .instruction(instruction),  // 명령어 출력
+        .next_pc(next_pc)   // 다음 프로그램 카운터 출력
+    );
+
+    // 시계 생성 (10ns 주기)
+    reg clk = 0;
+    always #5 clk = ~clk;  // 5ns 주기로 클럭 토글
+
+    // 테스트용 시그널
+    reg reset = 1;          // 리셋 상태
+    reg mem_read = 0;       // 메모리 읽기 신호
+    reg [15:0] mem_address = 16'h0000;  // 메모리 주소 초기화
+
+    // 테스트 시작
+    initial begin
+        // 리셋 해제
+        #10 reset = 0;
+
+        // 메모리 읽기 활성화
+        #20 mem_read = 1;
+
+        // 클럭 사이클링 (총 5사이클)
+        #30;
+        #30;
+        #30;
+        #30;
+        #30;
+
+        // 결과 확인
+        $display("Instruction: %h", fetch_unit.instruction);
+        $display("Next PC: %h", fetch_unit.next_pc);
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+endmodule
